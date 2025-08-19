@@ -1,8 +1,11 @@
+@import "tailwindcss";
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  display: flex;
 }
 
 .logo {
@@ -44,4 +47,15 @@
 .cotainer {
   width: 500px;
   height: 500px;
+}
+
+.leaflet-tooltip.my-tooltip {
+  background-color: transparent;
+  border: #888;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
 }

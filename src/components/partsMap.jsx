@@ -12,10 +12,7 @@ export default function PartsMap() {
 
   const sectionStyle = (section) => {
     return {
-      fillColor:
-        hoveredSection === section.id
-          ? `${section.color}aa`
-          : `${section.color}77`,
+      fillColor: hoveredSection === section.id ? "#fdf902ff" : "#ffffff",
       weight: 1,
       color: "#ffffff",
       fillOpacity: 0.7,
@@ -24,13 +21,16 @@ export default function PartsMap() {
   };
 
   return (
-    <div className=" cotainer">
+    <div className=" cotainer ">
       <MapContainer
         center={egyptCenter}
         zoom={6}
         scrollWheelZoom={false}
         style={{ height: "100%", width: "100%" }}
         attributionControl={false}
+        zoomControl={false}
+        dragging={false}
+        doubleClickZoom={false}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">openstream</a> contributors'
@@ -45,10 +45,12 @@ export default function PartsMap() {
             eventHandlers={{
               click: () => alert(section.id),
               mouseover: () => setHoveredSection(section.id),
+              mouseout: () => setHoveredSection(null),
             }}
           >
-            <Tooltip direction="center" permanent>
+            <Tooltip direction="center" permanent className="my-tooltip">
               <span className="section-label">{section.name}</span>
+              <div>*</div>
             </Tooltip>
           </GeoJSON>
         ))}

@@ -1,13 +1,14 @@
+import React, { useState } from "react";
 import "./App.css";
-import PartsMap from "./components/partsMap";
-import ReactiveMap from "./components/reactiveMap";
-import SectorsMap from "./components/sectorMap";
+import Home from "./components/home";
+import { PageContext } from "./context/pageContext";
 
 function App() {
+  const [page, setPage] = useState("main");
   return (
-    <div className=" bg-amber-300 w-full h-full flex flex-1">
-      <SectorsMap />
-    </div>
+    <PageContext.Provider value={{ page, setPage }}>
+      <Home />;
+    </PageContext.Provider>
   );
 }
 

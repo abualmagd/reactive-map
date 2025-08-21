@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import DataSection from "./dataSection";
 import FilterSection from "./filterSection";
 import PartsMap from "./partsMap";
@@ -10,9 +11,14 @@ export default function Home() {
         خريطة المدارس – منطقة الرياض{" "}
       </p>
       <div className="h-5"></div>
-      <div className="  w-full h-full flex md:flex-row flex-col-reverse  md:items-start items-center gap-4 flex-1">
+      <div className="  w-full h-full flex lg:flex-row flex-col-reverse  lg:items-start items-center gap-4 flex-1">
         <FilterSection />
         <ReactiveMap />
+      </div>
+      <div className=" w-full h-20 flex items-end  justify-items-end">
+        <Link to={"/admin"} className=" mr-auto border rounded px-2 py-1">
+          التحكم
+        </Link>
       </div>
     </div>
   );

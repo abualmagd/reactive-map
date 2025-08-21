@@ -2,21 +2,29 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import Home from "./components/home";
 import { SchoolContext } from "./context/school";
-import { schoolsData } from "./data";
 import { InitialContext } from "./context/initialContext";
+import { getAllSchools } from "./services/schoolsServices";
 
 function App() {
   const [mySchools, setMySchools] = useState([]);
   const [myData, setMyData] = useState([]);
 
   useEffect(() => {
-    const data = getSchools();
-    setMySchools(data);
-    setMyData(data);
+    getDbSchools();
   }, []);
 
-  const getSchools = () => {
+  /*const getSchools = () => {
     return schoolsData;
+  };*/
+  const getDbSchools = async () => {
+    try {
+      const respo = await getAllSchools();
+      setMySchools(respo);
+      setMyData(respo);
+      console.log(respo);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   if (!mySchools) {

@@ -10,7 +10,7 @@ export default function Home() {
         خريطة المدارس – منطقة الرياض{" "}
       </p>
       <div className="h-5"></div>
-      <div className="  w-full h-full flex md:flex-row flex-col-reverse items-center gap-4 flex-1">
+      <div className="  w-full h-full flex md:flex-row flex-col-reverse  md:items-start items-center gap-4 flex-1">
         <FilterSection />
         <ReactiveMap />
       </div>

@@ -8,6 +8,21 @@
   display: flex;
 }
 
+/* variables */
+:root {
+  --brand-color: #10b981;
+  --blue: #3d7eb9;
+  --blue-light: #0da9a6;
+  --blue-dark: #15445a;
+  --gray: #c2c1c1;
+  --green: #07a869;
+  --brown: #c1b48a;
+  --first: blue;
+  --second: green;
+  --third: red;
+  --fourth: gray;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -92,16 +107,26 @@
 
 /*marker*/
 
-.marker-icon.sector-1 {
-  background: #a7bc14; /* Green */
+.marker-icon.sector-1,
+.card-schola-1 {
+  background: var(--first);
 }
 
-.marker-icon.sector-2 {
-  background: #0047b3; /* Blue */
+.marker-icon.sector-2,
+.card-schola-2 {
+  background: var(--second);
   border-radius: 25%;
 }
 
-.marker-icon.sector-3 {
-  background: #66fb61; /* Light blue */
+.marker-icon.sector-3,
+.card-schola-3 {
+  background: var(--third);
   border-radius: 50%;
+}
+
+.marker-icon.sector-4,
+.card-schola-4 {
+  background: var(--fourth);
+  border-bottom-right-radius: calc(infinity * 1px);
+  border-bottom-left-radius: calc(infinity * 1px);
 }

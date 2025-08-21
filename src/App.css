@@ -3,7 +3,7 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 2px;
   text-align: center;
   display: flex;
 }
@@ -41,8 +41,8 @@
 }
 
 .cotainer {
-  width: 600px;
-  height: 500px;
+  width: 700px;
+  height: 600px;
   opacity: 0.8;
 
   box-shadow: inset 0 0 50px 20px rgba(13, 45, 136, 0.8),
@@ -90,4 +90,18 @@
   }
 }
 
-/*scrollbar*/
+/*marker*/
+
+.marker-icon.sector-1 {
+  background: #a7bc14; /* Green */
+}
+
+.marker-icon.sector-2 {
+  background: #0047b3; /* Blue */
+  border-radius: 25%;
+}
+
+.marker-icon.sector-3 {
+  background: #66fb61; /* Light blue */
+  border-radius: 50%;
+}

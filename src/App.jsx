@@ -1,14 +1,35 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import Home from "./components/home";
-import { PageContext } from "./context/pageContext";
+import { SchoolContext } from "./context/school";
+import { schoolsData } from "./data";
+import { InitialContext } from "./context/initialContext";
 
 function App() {
-  const [page, setPage] = useState("main");
+  const [mySchools, setMySchools] = useState([]);
+  const [myData, setMyData] = useState([]);
+
+  useEffect(() => {
+    const data = getSchools();
+    setMySchools(data);
+    setMyData(data);
+  }, []);
+
+  const getSchools = () => {
+    return schoolsData;
+  };
+
+  if (!mySchools) {
+    <div>loading</div>;
+  }
   return (
-    <PageContext.Provider value={{ page, setPage }}>
-      <Home />;
-    </PageContext.Provider>
+    <InitialContext.Provider value={{ data: myData, setData: setMyData }}>
+      <SchoolContext.Provider
+        value={{ schools: mySchools, setSchools: setMySchools }}
+      >
+        <Home />;
+      </SchoolContext.Provider>
+    </InitialContext.Provider>
   );
 }
 

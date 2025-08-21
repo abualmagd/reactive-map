@@ -59,8 +59,10 @@ const SectorData = ({ data }) => {
     }
 
     // Filter by name (case-insensitive)
-    const result = filteredBySector.filter((center) =>
-      center.name.toLowerCase().includes(searchTerm)
+    const result = filteredBySector.filter(
+      (center) =>
+        center.name.toLowerCase().includes(searchTerm) ||
+        center.description.toLowerCase().includes(searchTerm)
     );
 
     updateMyCenters(result);
@@ -68,9 +70,9 @@ const SectorData = ({ data }) => {
   return (
     <>
       {!show ? (
-        <div className=" flex flex-col w-full flex-1 h-full gap-3 text-start">
+        <div className=" flex flex-col gap-5 w-full flex-1 h-full text-start">
           <p className=" px-3 py-2   my-3 text-xl font-bold w-fit flex flex-row-reverse  items-center relative">
-            <span>{data.title || "تجمع الرياض الصحي الأول"} </span>
+            <span>{data.title || ""} </span>
             <span
               className=" absolute -right-10 top-0 w-10 flex items-center justify-center cursor-pointer  h-10 bg-blue-400/15 hover:bg-blue-400/30 rounded-full "
               onClick={() => setPage("main")}
@@ -78,19 +80,19 @@ const SectorData = ({ data }) => {
               {"<"}
             </span>
           </p>
-          <p className="px-3 py-2   my-3 text-md text-gray-300 font-bold w-fit max-w-[500px] text-start ">
+          {/* <p className="px-3 py-2   my-3 text-md text-gray-300 font-bold w-fit max-w-[500px] text-start ">
             {data.description ||
               "يقدم تجمع الرياض الصحي الأول خدمات الرعاية الصحية لأكثر من 3.6 مليون مستفيد، من خلال 157 مركزًا للرعاية الأولية ومدينة طبية، و 18 مستشفى عام ومتخصص بسعة سريرية إجمالية تصل إلى 4000 سريرًا."}
-          </p>
+          </p>*/}
           <div className=" numbery text-5xl font-extrabold">
             {data.centerCount || 157}
           </div>
-          <p className=" text-5xl font-bold">مركز صحي</p>
+          <p className=" text-5xl font-bold"> مدرسة</p>
           <div
             onClick={() => updateShow(true)}
             className=" mt-5 rounded bg-blue-200/50 text-white cursor-pointer w-32 py-3 text-center"
           >
-            أعرض المراكز
+            أعرض المدارس
           </div>
           <div className=" h-60"></div>
         </div>

@@ -1,16 +1,18 @@
 import DataSection from "./dataSection";
-import SectorsMap from "./sectorMap";
+import FilterSection from "./filterSection";
+import PartsMap from "./partsMap";
+import ReactiveMap from "./reactiveMap";
 
 export default function Home() {
   return (
     <div className=" w-full h-full flex-1 flex flex-col  items-center text-white">
       <p className=" px-3 py-2 rounded-xl bg-blue-200/20 my-3 text-xl font-bold w-fit text-white">
-        خريطة التجمعات الصحية بالرياض
+        خريطة المدارس – منطقة الرياض{" "}
       </p>
       <div className="h-5"></div>
-      <div className="  w-full h-full flex md:flex-row flex-col flex-1">
-        <DataSection />
-        <SectorsMap />
+      <div className="  w-full h-full flex md:flex-row flex-col-reverse items-center gap-4 flex-1">
+        <FilterSection />
+        <ReactiveMap />
       </div>
     </div>
   );

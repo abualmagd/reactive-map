@@ -1,6 +1,7 @@
 import AddSchoolSection from "./components/addSchoolSection";
 import "./App.css";
 import { Link } from "react-router";
+import { ToastContainer } from "react-toastify";
 
 export default function Admin() {
   return (
@@ -14,6 +15,8 @@ export default function Admin() {
       <div className="  w-full h-full flex lg:flex-row flex-col  lg:items-start items-center gap-4 flex-1">
         <AddSchoolSection />
       </div>
+
+      <ToastContainer />
     </div>
   );
 }

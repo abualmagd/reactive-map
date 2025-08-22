@@ -4,6 +4,8 @@ import {
   createManySchools,
   createNewSchool,
 } from "../services/schoolsServices";
+import { notify } from "../services/utils";
+import EditSchool from "./editSchool";
 
 export default function AddSchoolSection() {
   const [loading, updateLoading] = useState(false);
@@ -22,7 +24,7 @@ export default function AddSchoolSection() {
   const supervisorRef = useRef();
   const latRef = useRef();
   const longRef = useRef();
-
+  const numberRef = useRef();
   const nameSector = (id) => {
     switch (id) {
       case 1:
@@ -55,41 +57,50 @@ export default function AddSchoolSection() {
         const res = await createManySchools(data);
         console.log(res);
         updateLoading(false);
+        notify("تم الاضافة بنجاح", "success");
       } catch (error) {
         console.log(error);
         updateLoading(false);
+        notify("فشل الاضافة", "error");
       }
     }
   };
 
   const saveNewSchool = async () => {
-    if (nameRef.current.value) {
+    if (nameRef.current?.value) {
       updateLoadingSchool(true);
       try {
         const res = await createNewSchool({
-          number: "145247",
-          name: nameRef.current.value,
-          quarter: quarterRef.current.value ?? "",
-          sector: () => nameSector(sectorRef.current.value),
-          sectorId: sectorRef.current.value ?? 4,
-          stage: stageRef.current.value ?? "",
-          gender: genderRef.current.value ?? "",
-          rule: roleRef.current.value ?? "",
-          type: typeRef.current.value ?? "",
-          manager: managerRef.current.value ?? "",
-          email: emailRef.current.value ?? "",
-          phone: phoneRef.current.value ?? "",
-          supervisor: supervisorRef.current.value ?? "",
-          latitude: latRef.current.value ?? "",
-          longitude: longRef.current.value ?? "",
+          number: numberRef.current?.value ?? "",
+          name: nameRef.current?.value,
+          quarter: quarterRef.current?.value ?? "",
+          sector: nameSector(sectorRef.current?.value),
+          sectorId: sectorRef.current?.value ?? 4,
+          stage: stageRef.current?.value ?? "",
+          gender: genderRef.current?.value ?? "",
+          rule: roleRef.current?.value ?? "",
+          type: typeRef.current?.value ?? "",
+          manager: managerRef.current?.value ?? "",
+          email: emailRef.current?.value ?? "",
+          phone: phoneRef.current?.value ?? "",
+          supervisor: supervisorRef.current?.value ?? "",
+          latitude: latRef.current?.value ?? "",
+          longitude: longRef.current?.value ?? "",
         });
         console.log(res);
+        notify("تم الاضافة بنجاح", "success");
         updateLoadingSchool(false);
       } catch (error) {
         console.log(error);
+        notify("فشل الاضافة", "error");
         updateLoadingSchool(false);
       }
     }
+  };
+
+  const submit = async (e) => {
+    e.preventDefault();
+    await saveNewSchool();
   };
   return (
     <div className=" px-6 flex-1 w-full">
@@ -102,7 +113,7 @@ export default function AddSchoolSection() {
         <div className="flex gap-6 my-2">
           <label
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            for="file_input"
+            htmlFor="file_input"
           >
             ارفق الملف{" "}
           </label>
@@ -135,7 +146,10 @@ export default function AddSchoolSection() {
       </div>
 
       <div className="divider border-2 w-full mt-4"></div>
-      <form className="add-from-inputs mt-5 flex-1 flex flex-col w-full">
+      <form
+        onSubmit={submit}
+        className="add-from-inputs mt-5 flex-1 flex flex-col w-full"
+      >
         <div className=" flex flex-col w-full gap-4 h-full mt-5">
           <h3 className=" text-xl mt-3 mb-6 font-semibold">
             اضافة مدرسة يدويا
@@ -144,6 +158,7 @@ export default function AddSchoolSection() {
             <div className=" flex flex-col gap-2.5 items-start w-full">
               <label htmlFor="school-name"> اسم المدرسة:</label>
               <input
+                required
                 type="text"
                 name="school-name"
                 id="school-name"
@@ -184,7 +199,7 @@ export default function AddSchoolSection() {
                 name="school-phone"
                 id="school-phone"
                 ref={phoneRef}
-                placeholder="الجوال.."
+                placeholder="9966...."
                 className=" outline-none bg-[var(--gray)] w-2/3 h-10 text-black px-2 rounded"
               />
             </div>
@@ -213,9 +228,21 @@ export default function AddSchoolSection() {
               />
             </div>
             <div className=" flex flex-col gap-2.5 items-start w-full">
+              <label htmlFor="school-number"> الرقم الوزاري :</label>
+              <input
+                type="number"
+                ref={numberRef}
+                name="school-number"
+                id="school-number"
+                placeholder=" ..."
+                className=" outline-none bg-[var(--gray)] w-2/3 h-10 text-black px-2 rounded"
+              />
+            </div>
+            <div className=" flex flex-col gap-2.5 items-start w-full">
               <label htmlFor="school-long">خط الطول :</label>
               <input
-                type="decimal"
+                type="number"
+                step={"any"}
                 ref={longRef}
                 name="school-long"
                 id="school-long"
@@ -227,8 +254,9 @@ export default function AddSchoolSection() {
             <div className=" flex flex-col gap-2.5 items-start w-full">
               <label htmlFor="school-lat">خط العرض :</label>
               <input
-                type="decimal"
+                type="number"
                 ref={latRef}
+                step={"any"}
                 name="school-lat"
                 id="school-lat"
                 placeholder=".."
@@ -305,13 +333,11 @@ export default function AddSchoolSection() {
         </div>
 
         {!loadingSchool ? (
-          <button
-            onClick={saveNewSchool}
-            className="text-white max-w-60 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
-          >
-            {" "}
-            احفظ الداتا من الملف
-          </button>
+          <input
+            type="submit"
+            value={" احفظ المدرسة"}
+            className="text-white max-w-60 cursor-pointer bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+          ></input>
         ) : (
           <button
             disabled
@@ -322,6 +348,8 @@ export default function AddSchoolSection() {
           </button>
         )}
       </form>
+      <div className="divider border-2 my-8 w-full"></div>
+      <EditSchool />
     </div>
   );
 }

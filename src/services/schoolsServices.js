@@ -40,7 +40,7 @@ export async function updateSchool(schoolsData) {
 
 export async function deleteSchool(id) {
   try {
-    const res = await window.electronAPI.updateSchool(id);
+    const res = await window.electronAPI.deleteSchool(id);
     return res;
   } catch (error) {
     console.log(error);

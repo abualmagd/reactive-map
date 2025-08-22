@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { getAllSchools } from "../services/schoolsServices";
+import {
+  deleteSchool,
+  getAllSchools,
+  updateSchool,
+} from "../services/schoolsServices";
+import { notify } from "../services/utils";
 
 export default function EditSchool() {
   const [schola, updateSchola] = useState();
@@ -7,18 +12,19 @@ export default function EditSchool() {
   const [data, updatData] = useState();
   const nameRef = useState();
 
-  // eslint-disable-next-line no-unused-vars
   const search = () => {
     const nameValue = nameRef.current?.value.trim().toLowerCase();
     let filtered = data;
 
     if (nameValue) {
+      console.log("here");
       filtered = filtered.filter((schola) =>
         schola.name?.toLowerCase().includes(nameValue)
       );
+      updatSchools(filtered);
+    } else {
+      updatSchools(filtered);
     }
-    //find
-    updateSchola(filtered);
   };
 
   const getDbSchools = async () => {
@@ -36,34 +42,57 @@ export default function EditSchool() {
     getDbSchools();
   }, []);
 
+  const moveToFixero = () => {
+    const element = document.getElementById("fixero");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   return (
     <div className="flex flex-col w-full">
       <p className=" text-xl mt-3 mb-6 font-semibold"> تعديل مدرسة </p>
-      <div className="flex w-full">
+      <div className="flex lg:flex-row flex-col w-full">
         <div className="flex flex-col w-full">
-          /**search inputs */
-          <div className="grid lg:grid-cols-2 grid-cols-1 gap-5 w-full h-[600px] overflow-y-scroll ">
-            {schools?.map((schola) => {
+          <div className="flex flex-col w-60">
+            <label htmlFor="nameo">ابحث باسم المدرسة</label>
+            <input
+              type="text"
+              name="nameo"
+              id="nameo"
+              ref={nameRef}
+              onChange={() => search()}
+              className=" outline-none bg-[var(--gray)]/20 w-full my-2 h-10 text-white px-2 rounded"
+            />
+          </div>
+          <div className="grid lg:grid-cols-2 grid-cols-1 gap-5 w-full h-72 overflow-y-scroll ">
+            {schools?.map((sch, index) => {
               return (
                 <div
-                  onClick={() => updateSchola(schola)}
-                  className="flex w-52 h-20 items-center justify-center text-black px-2 bg-[var(--gray)] my-2 rounded shadow cursor-pointer"
+                  key={index}
+                  onClick={() => {
+                    moveToFixero();
+                    updateSchola(sch);
+                  }}
+                  className={`flex w-52 h-20 items-center justify-center text-black px-2  my-2 rounded shadow cursor-pointer  ${
+                    sch.id === schola?.id ? "bg-blue-600" : "bg-[var(--gray)]"
+                  }`}
                 >
-                  <h2>{schola.name}</h2>
+                  <h2>{sch.name}</h2>
                 </div>
               );
             })}
           </div>
         </div>
-
-        {schola && <FixerSection school={schola} />}
+        <div className=" mx-4 w-full">
+          {schola && <FixerSection school={schola} />}
+        </div>
       </div>
     </div>
   );
 }
 
 const FixerSection = ({ school }) => {
-  console.log(school);
   const [loadingSchool, updateLoadingSchool] = useState(false);
   const [skool, updateSkool] = useState({
     id: school.id ?? " ",
@@ -85,9 +114,7 @@ const FixerSection = ({ school }) => {
   });
 
   const handleChange = (e) => {
-    if (e.target.value) {
-      updateSkool((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    }
+    updateSkool((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   useEffect(() => {
@@ -138,13 +165,26 @@ const FixerSection = ({ school }) => {
   };
 
   //update school
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
-    updateLoadingSchool(true);
+    try {
+      updateLoadingSchool(true);
+      await updateSchool(skool);
+      notify("تم النحديث", "success");
+      //updateSkool(res)
+      updateLoadingSchool(false);
+    } catch (error) {
+      notify(`خطأ في التصحيح  + ${String(error)}`, "error");
+      console.log(error);
+      updateLoadingSchool(false);
+    }
   };
 
+  const showDialog = () => {
+    document.getElementById("sureModal").showModal();
+  };
   return (
-    <div className=" mx-4 w-full">
+    <div className=" mx-4 w-full" id="fixero">
       {school && (
         <form
           onSubmit={submit}
@@ -347,7 +387,7 @@ const FixerSection = ({ school }) => {
           {!loadingSchool ? (
             <input
               type="submit"
-              value={" احفظ المدرسة"}
+              value={" احفظ التعديلات"}
               className="text-white max-w-60 cursor-pointer bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
             ></input>
           ) : (
@@ -361,6 +401,95 @@ const FixerSection = ({ school }) => {
           )}
         </form>
       )}
+      <button
+        onClick={showDialog}
+        className="text-white max-w-60 cursor-pointer bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+      >
+        أحذف تلك المدرسة
+      </button>
+      <AreYouShureModal skoolId={skool.id} />
     </div>
+  );
+};
+
+const AreYouShureModal = ({ skoolId }) => {
+  const removeSk = async () => {
+    try {
+      await deleteSchool(skoolId);
+      closeDialog();
+      notify("تم الحذف", "success");
+    } catch (error) {
+      closeDialog();
+      notify(error + " خطأ في حذف المدرسة", "error");
+    }
+  };
+
+  const closeDialog = () => {
+    document.getElementById("sureModal").close();
+  };
+
+  return (
+    <dialog id="sureModal">
+      <div className=" bg-amber-100/5 flex overflow-y-auto overflow-x-hidden fixed top-0 bottom-0  right-0 left-0 z-50  justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div className="relative mt-auto p-4 w-full max-w-md max-h-full">
+          <div className="relative bg-white  rounded-lg shadow-sm dark:bg-gray-700">
+            <button
+              type="button"
+              className="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              data-modal-hide="popup-modal"
+            >
+              <svg
+                className="w-3 h-3"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 14 14"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                />
+              </svg>
+              <span className="sr-only">Close modal</span>
+            </button>
+            <div className="p-4 md:p-5 text-center">
+              <svg
+                className="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
+              </svg>
+              <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                هل أنت متأكد من حذف المدرسة
+              </h3>
+              <button
+                onClick={removeSk}
+                className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
+              >
+                نعم أكيد
+              </button>
+              <button
+                onClick={closeDialog}
+                className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+              >
+                لا ألغاء
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </dialog>
   );
 };

@@ -1,9 +1,8 @@
 @import "tailwindcss";
 
 #root {
-  max-width: 1280px;
+  max-width: 1380px;
   margin: 0 auto;
-  padding: 2px;
   text-align: center;
   display: flex;
 }
@@ -55,17 +54,7 @@
   color: #888;
 }
 
-.cotainer {
-  width: 700px;
-  height: 600px;
-  opacity: 0.8;
-
-  box-shadow: inset 0 0 50px 20px rgba(13, 45, 136, 0.8),
-    inset 0 0 100px 40px rgba(13, 45, 136, 0.6);
-  filter: drop-shadow(0 0 50px rgba(13, 66, 136, 0.459));
-}
-
-.scrollbar-rtl {
+.scrollinger-rtl {
   direction: ltr;
 }
 

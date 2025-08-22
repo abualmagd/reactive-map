@@ -18,16 +18,16 @@ export default function ReactiveMap() {
 
   const saCenter = [23.496310871525523, 44.98354801038431];
   return (
-    <div className=" cotainer">
+    <div className=" h-full w-full container">
       <MapContainer
         center={saCenter}
-        scrollWheelZoom={false}
+        scrollWheelZoom={true}
         style={{ height: "100%", width: "100%" }}
         attributionControl={false}
         zoom={6.2}
-        zoomControl={false}
-        dragging={false}
-        doubleClickZoom={false}
+        zoomControl={true}
+        dragging={true}
+        doubleClickZoom={true}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">openstream</a> contributors'

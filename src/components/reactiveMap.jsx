@@ -97,7 +97,7 @@ const PopDiv = ({ schola }) => {
         <div>
           <span>جوال الموجه: </span>{" "}
           <a
-            href={`https://wa.me/${schola.phone}`}
+            href={`https://wa.me/${schola.dphone}`}
             target="_blank"
             rel="noopener noreferrer"
           >

@@ -6,17 +6,20 @@ export const exportToExcel = async (data, fileName = "المدارس") => {
     number: "الرقم الوزاري",
     name: "اسم المدرسة",
     quarter: "الحي",
+    region: "المنطقة",
     sector: "التجمع الصحي",
     stage: "المرحلة",
-    gender: "جنس المدرسة",
     rule: "السلطة",
+    gender: "جنس المدرسة",
     type: "نوع المدرسة",
     manager: "اسم مدير المدرسة",
     email: "البريد الإلكتروني لمدير المدرسة",
     phone: "جوال مدير المدرسة",
-    supervisor: "اسم المشرف الصحي",
     latitude: "خط العرض",
     longitude: "خط الطول",
+    director: "اسم الموجه الصحي",
+    dphone: "جوال الموجه الصحي",
+    supervisor: "اسم المشرف الصحي",
   };
 
   const workbook = new ExcelJS.Workbook();
@@ -129,20 +132,23 @@ export const exportToExcel = async (data, fileName = "المدارس") => {
 export const importFromExcel = async (file) => {
   // Reverse mapping from Arabic to English keys
   const englishKeys = {
-    "الرقم الوزاري": "number",
-    "اسم المدرسة": "name",
-    المنطقة: "quarter",
-    "التجمع الصحي": "sector",
-    المرحلة: "stage",
-    "جنس المدرسة": "gender",
-    السلطة: "rule",
-    "نوع المدرسة": "type",
-    "اسم مدير المدرسة": "manager",
-    "البريد الإلكتروني لمدير المدرسة": "email",
-    "جوال مدير المدرسة": "phone",
-    "اسم المشرف الصحي": "supervisor",
-    "خط العرض": "latitude",
-    "خط الطول": "longitude",
+    number: "الرقم الوزاري",
+    name: "اسم المدرسة",
+    quarter: "الحي",
+    region: "المنطقة",
+    sector: "التجمع الصحي",
+    stage: "المرحلة",
+    rule: "السلطة",
+    gender: "جنس المدرسة",
+    type: "نوع المدرسة",
+    manager: "اسم مدير المدرسة",
+    email: "البريد الإلكتروني لمدير المدرسة",
+    phone: "جوال مدير المدرسة",
+    latitude: "خط العرض",
+    longitude: "خط الطول",
+    director: "اسم الموجه الصحي",
+    dphone: "جوال الموجه الصحي",
+    supervisor: "اسم المشرف الصحي",
   };
 
   // Map Arabic sector names to sectorId
@@ -203,6 +209,7 @@ export const importFromExcel = async (file) => {
 
         resolve(data);
       } catch (error) {
+        console.log(error);
         reject(error);
       }
     };
@@ -211,26 +218,26 @@ export const importFromExcel = async (file) => {
     reader.readAsArrayBuffer(file);
   });
 };
-
+/*
 export const importFromExcels = async (file) => {
   const englishKeys = {
-    "الرقم الوزاري": "number",
-    "اسم المدرسة": "name",
-    الحي: "quarter",
-    المنطقة: "region",
-    "التجمع الصحي": "sector",
-    المرحلة: "stage",
-    السلطة: "rule",
-    "جنس المدرسة": "gender",
-    "نوع المدرسة": "type",
-    "اسم مدير المدرسة": "manager",
-    "البريد الإلكتروني لمدير المدرسة": "email",
-    "جوال مدير المدرسة": "phone",
-    "خط العرض": "latitude",
-    "خط الطول": "longitude",
-    "اسم الموجه الصحي": "supervisorName",
-    "جوال الموجه الصحي": "supervisorPhone",
-    "اسم المشرف الصحي": "supervisor",
+    number: "الرقم الوزاري",
+    name: "اسم المدرسة",
+    quarter: "الحي",
+    region: "المنطقة",
+    sector: "التجمع الصحي",
+    stage: "المرحلة",
+    rule: "السلطة",
+    gender: "جنس المدرسة",
+    type: "نوع المدرسة",
+    manager: "اسم مدير المدرسة",
+    email: "البريد الإلكتروني لمدير المدرسة",
+    phone: "جوال مدير المدرسة",
+    latitude: "خط العرض",
+    longitude: "خط الطول",
+    director: "اسم الموجه الصحي",
+    dphone: "جوال الموجه الصحي",
+    supervisor: "اسم المشرف الصحي",
   };
 
   const sectorMap = {
@@ -335,6 +342,128 @@ export const importFromExcels = async (file) => {
         resolve(data);
       } catch (error) {
         console.error("Excel import error:", error);
+        reject(error);
+      }
+    };
+
+    reader.onerror = (error) => reject(error);
+    reader.readAsArrayBuffer(file);
+  });
+};*/
+
+export const importFromExcels = async (file) => {
+  const englishKeys = {
+    number: "الرقم الوزاري",
+    name: "اسم المدرسة",
+    quarter: "الحي",
+    region: "المنطقة",
+    sector: "التجمع الصحي",
+    stage: "المرحلة",
+    rule: "السلطة",
+    gender: "جنس المدرسة",
+    type: "نوع المدرسة",
+    manager: "اسم مدير المدرسة",
+    email: "البريد الإلكتروني لمدير المدرسة",
+    phone: "جوال مدير المدرسة",
+    latitude: "خط العرض",
+    longitude: "خط الطول",
+    director: "اسم الموجه الصحي",
+    dphone: "جوال الموجه الصحي",
+    supervisor: "اسم المشرف الصحي",
+  };
+
+  // Create reverse mapping from Arabic to English
+  const arabicToEnglishMap = {};
+  Object.entries(englishKeys).forEach(([englishKey, arabicValue]) => {
+    arabicToEnglishMap[arabicValue] = englishKey;
+  });
+
+  const sectorMap = {
+    "التجمع الصحي الأول": 1,
+    "التجمع الصحي الثاني": 2,
+    "التجمع الصحي الثالث": 3,
+    "لا تتبع أي تجمع": 4,
+    "لا تدخل ضمن تطبيق الخطة المشتركه ولا التجمعات الصحية": 5,
+    "": 4,
+  };
+
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = async (e) => {
+      try {
+        const buffer = e.target.result;
+        const workbook = new ExcelJS.Workbook();
+        await workbook.xlsx.load(buffer);
+
+        const worksheet = workbook.worksheets[0];
+        if (!worksheet) {
+          throw new Error("No worksheets found in the Excel file");
+        }
+
+        const data = [];
+
+        // Get headers from first row
+        const headers = [];
+        const headerRow = worksheet.getRow(1);
+
+        if (!headerRow) {
+          throw new Error("No header row found");
+        }
+
+        // Read headers
+        headerRow.eachCell({ includeEmpty: true }, (cell, colNumber) => {
+          headers[colNumber] = cell.value ? String(cell.value).trim() : "";
+        });
+
+        // Process each row starting from row 2
+        for (let rowNumber = 2; rowNumber <= worksheet.rowCount; rowNumber++) {
+          const row = worksheet.getRow(rowNumber);
+          if (!row || row.cellCount === 0) continue;
+
+          const rowData = {};
+          let hasData = false;
+
+          // Process each cell
+          row.eachCell({ includeEmpty: true }, (cell, colNumber) => {
+            const arabicHeader = headers[colNumber];
+
+            if (arabicHeader && arabicToEnglishMap[arabicHeader]) {
+              const englishKey = arabicToEnglishMap[arabicHeader];
+
+              if (cell.value !== null && cell.value !== undefined) {
+                const cellValue =
+                  typeof cell.value === "string"
+                    ? cell.value.trim()
+                    : cell.value;
+
+                rowData[englishKey] = cellValue;
+                if (cellValue !== "") {
+                  hasData = true;
+                }
+              } else {
+                rowData[englishKey] = "";
+              }
+            }
+          });
+
+          if (hasData) {
+            // Add sectorId based on sector name
+            if (rowData.sector) {
+              const sectorValue = String(rowData.sector).trim();
+              rowData.sectorId = sectorMap[sectorValue] || 4;
+            } else {
+              rowData.sectorId = 4;
+            }
+
+            // Generate unique ID
+            rowData.id = generateUniqueId();
+            data.push(rowData);
+          }
+        }
+
+        resolve(data);
+      } catch (error) {
         reject(error);
       }
     };

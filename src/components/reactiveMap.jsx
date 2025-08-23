@@ -78,14 +78,30 @@ const PopDiv = ({ schola }) => {
         <div className=" font-bold">
           <span> المدير:</span> <span>{schola.manager}</span>{" "}
         </div>
+        <div className=" ">
+          <span> المشرف:</span> <span>{schola.supervisor || ""}</span>{" "}
+        </div>
+        <div className="">
+          <span> الموجه:</span> <span>{schola.director || ""}</span>{" "}
+        </div>
         <div>
-          <span>جوال:</span>{" "}
+          <span>جوال المدير: </span>{" "}
           <a
             href={`https://wa.me/${schola.phone}`}
             target="_blank"
             rel="noopener noreferrer"
           >
             {schola.phone}
+          </a>
+        </div>
+        <div>
+          <span>جوال الموجه: </span>{" "}
+          <a
+            href={`https://wa.me/${schola.phone}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {schola.dphone || ""}
           </a>
         </div>
         <div>

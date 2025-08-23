@@ -277,7 +277,8 @@ export default function AddSchoolSection() {
                 <option value={1}>الأول </option>
                 <option value={2}>الثاني </option>
                 <option value={3}>الثالث </option>
-                <option value={4}>لا تببع </option>
+                <option value={4}>لا تتبع </option>
+                <option value={5}>لا تدخل ضمن </option>
               </select>
             </div>
 

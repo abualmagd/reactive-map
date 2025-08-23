@@ -8,6 +8,7 @@ import { getAllSchools } from "./services/schoolsServices";
 function App() {
   const [mySchools, setMySchools] = useState([]);
   const [myData, setMyData] = useState([]);
+  const [loading, updateLoading] = useState(true);
 
   useEffect(() => {
     getDbSchools();
@@ -21,13 +22,14 @@ function App() {
       const respo = await getAllSchools();
       setMySchools(respo);
       setMyData(respo);
-      console.log(respo);
+      updateLoading(false);
     } catch (error) {
       console.log(error);
+      updateLoading(false);
     }
   };
 
-  if (!mySchools) {
+  if (loading) {
     <div>loading</div>;
   }
   return (

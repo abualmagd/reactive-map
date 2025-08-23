@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   deleteSchool,
   getAllSchools,
@@ -10,7 +10,7 @@ export default function EditSchool() {
   const [schola, updateSchola] = useState();
   const [schools, updatSchools] = useState();
   const [data, updatData] = useState();
-  const nameRef = useState();
+  const nameRef = useRef();
 
   const search = () => {
     const nameValue = nameRef.current?.value.trim().toLowerCase();
@@ -32,7 +32,6 @@ export default function EditSchool() {
       const respo = await getAllSchools();
       updatSchools(respo);
       updatData(respo);
-      console.log(" from editing", respo);
     } catch (error) {
       console.log(error);
     }
@@ -65,8 +64,8 @@ export default function EditSchool() {
               className=" outline-none bg-[var(--gray)]/20 w-full my-2 h-10 text-white px-2 rounded"
             />
           </div>
-          <div className="grid lg:grid-cols-2 grid-cols-1 gap-5 w-full h-72 overflow-y-scroll ">
-            {schools?.map((sch, index) => {
+          <div className="grid lg:grid-cols-2 lg:mb-5 grid-cols-1 gap-5 w-full h-72 overflow-y-scroll ">
+            {schools?.slice(0, 15).map((sch, index) => {
               return (
                 <div
                   key={index}

@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { importFromExcel } from "../services/excelServices";
+import { importFromExcels } from "../services/excelServices";
 import {
   createManySchools,
   createNewSchool,
@@ -53,7 +53,7 @@ export default function AddSchoolSection() {
     if (file) {
       updateLoading(true);
       try {
-        const data = await importFromExcel(file);
+        const data = await importFromExcels(file);
         const res = await createManySchools(data);
         console.log(res);
         updateLoading(false);
@@ -61,7 +61,7 @@ export default function AddSchoolSection() {
       } catch (error) {
         console.log(error);
         updateLoading(false);
-        notify("فشل الاضافة", "error");
+        notify("فشل الاضافة" + String(error), "error");
       }
     }
   };

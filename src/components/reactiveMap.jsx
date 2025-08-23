@@ -18,7 +18,7 @@ export default function ReactiveMap() {
 
   const saCenter = [23.496310871525523, 44.98354801038431];
   return (
-    <div className=" h-full w-full container">
+    <div className=" h-full w-full  container">
       <MapContainer
         center={saCenter}
         scrollWheelZoom={true}

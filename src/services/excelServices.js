@@ -212,6 +212,138 @@ export const importFromExcel = async (file) => {
   });
 };
 
+export const importFromExcels = async (file) => {
+  const englishKeys = {
+    "الرقم الوزاري": "number",
+    "اسم المدرسة": "name",
+    الحي: "quarter",
+    المنطقة: "region",
+    "التجمع الصحي": "sector",
+    المرحلة: "stage",
+    السلطة: "rule",
+    "جنس المدرسة": "gender",
+    "نوع المدرسة": "type",
+    "اسم مدير المدرسة": "manager",
+    "البريد الإلكتروني لمدير المدرسة": "email",
+    "جوال مدير المدرسة": "phone",
+    "خط العرض": "latitude",
+    "خط الطول": "longitude",
+    "اسم الموجه الصحي": "supervisorName",
+    "جوال الموجه الصحي": "supervisorPhone",
+    "اسم المشرف الصحي": "supervisor",
+  };
+
+  const sectorMap = {
+    "التجمع الصحي الأول": 1,
+    "التجمع الصحي الثاني": 2,
+    "التجمع الصحي الثالث": 3,
+    "لا تتبع أي تجمع": 4,
+    5: "لا تدخل ضمن تطبيق الخطة المشتركه ولا التجمعات الصحية",
+
+    "": 4,
+  };
+
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = async (e) => {
+      try {
+        const buffer = e.target.result;
+        const workbook = new ExcelJS.Workbook();
+        await workbook.xlsx.load(buffer);
+
+        const worksheet = workbook.worksheets[0];
+        if (!worksheet) {
+          throw new Error("No worksheets found in the Excel file");
+        }
+
+        const data = [];
+
+        // Get headers from first row - handle empty columns
+        const headers = [];
+        const headerRow = worksheet.getRow(1);
+
+        if (!headerRow) {
+          throw new Error("No header row found");
+        }
+
+        // Use eachCell with includeEmpty: true to get all columns including empty ones
+        headerRow.eachCell({ includeEmpty: true }, (cell, colNumber) => {
+          if (cell.value) {
+            headers[colNumber] =
+              typeof cell.value === "string"
+                ? cell.value.trim()
+                : String(cell.value);
+          } else {
+            headers[colNumber] = ""; // Mark empty header cells
+          }
+        });
+
+        // Process each row starting from row 2
+        for (let rowNumber = 2; rowNumber <= worksheet.rowCount; rowNumber++) {
+          const row = worksheet.getRow(rowNumber);
+
+          // Skip completely empty rows
+          if (!row || row.cellCount === 0) continue;
+
+          const rowData = {};
+          let hasData = false;
+
+          // Process each cell in the row
+          row.eachCell({ includeEmpty: true }, (cell, colNumber) => {
+            const arabicHeader = headers[colNumber];
+
+            // Only process if header exists and is mapped
+            if (
+              arabicHeader &&
+              arabicHeader.trim() &&
+              englishKeys[arabicHeader]
+            ) {
+              const englishKey = englishKeys[arabicHeader];
+
+              // Handle empty cells gracefully
+              if (cell.value !== null && cell.value !== undefined) {
+                rowData[englishKey] =
+                  typeof cell.value === "string"
+                    ? cell.value.trim()
+                    : cell.value;
+                if (rowData[englishKey] !== "") {
+                  hasData = true;
+                }
+              } else {
+                rowData[englishKey] = "";
+              }
+            }
+          });
+
+          // Only add row if it has some data
+          if (hasData) {
+            // Add sectorId based on sector name
+            if (rowData.sector) {
+              const sectorValue = String(rowData.sector).trim();
+              rowData.sectorId = sectorMap[sectorValue] || 4;
+            } else {
+              rowData.sectorId = 4;
+            }
+
+            // Generate unique ID
+            rowData.id = generateUniqueId();
+            data.push(rowData);
+          }
+        }
+
+        resolve(data);
+      } catch (error) {
+        console.error("Excel import error:", error);
+        reject(error);
+      }
+    };
+
+    reader.onerror = (error) => reject(error);
+    reader.readAsArrayBuffer(file);
+  });
+};
+
 // Helper function to generate unique ID
 export const generateUniqueId = () => {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);

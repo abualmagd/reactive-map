@@ -1,3 +1,12 @@
+* {
+  box-sizing: border-box;
+}
+
+/* Prevent flash of unstyled content during resize */
+body {
+  background-color: #253779; /* Match your app's background */
+}
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

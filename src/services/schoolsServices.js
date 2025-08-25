@@ -47,3 +47,13 @@ export async function deleteSchool(id) {
     throw error;
   }
 }
+
+export async function deleteAllSchools() {
+  try {
+    const res = await window.electronAPI.deleteAllSchool();
+    return res;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}

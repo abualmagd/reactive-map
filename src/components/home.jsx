@@ -1,6 +1,8 @@
 import FilterSection from "./filterSection";
 import ReactiveMap from "./reactiveMap";
 
+//const ReactiveMap = React.lazy(() => import("./reactiveMap"));
+
 export default function Home() {
   return (
     <div className=" md:h-screen   w-full lg:overflow-y-hidden  flex-1 flex flex-col  items-center text-white">

@@ -1,11 +1,13 @@
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { useContext } from "react";
+import React, { useContext, useMemo } from "react";
 import { SchoolContext } from "../context/school";
 import L from "leaflet";
 
 export default function ReactiveMap() {
   const { schools } = useContext(SchoolContext);
+
+  const memoizedSchools = useMemo(() => schools, [schools]);
 
   const createClassBasedIcon = (schola) => {
     return L.divIcon({
@@ -33,12 +35,18 @@ export default function ReactiveMap() {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">openstream</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {schools.map((schola, index) => {
+        {memoizedSchools.map((schola, index) => {
           return (
             <Marker
               key={index}
               position={[schola.latitude, schola.longitude]}
               icon={createClassBasedIcon(schola)}
+              eventHandlers={{
+                // Only create popup when marker is clicked
+                click: (e) => {
+                  e.target.openPopup();
+                },
+              }}
             >
               <Popup>
                 <PopDiv schola={schola} />
@@ -51,7 +59,7 @@ export default function ReactiveMap() {
   );
 }
 
-const PopDiv = ({ schola }) => {
+const PopDiv = React.memo(({ schola }) => {
   return (
     <div
       key={schola.id}
@@ -120,4 +128,4 @@ const PopDiv = ({ schola }) => {
       </div>
     </div>
   );
-};
+});

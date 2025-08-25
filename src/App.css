@@ -20,6 +20,7 @@
   --second: green;
   --third: red;
   --fourth: gray;
+  --five: black;
 }
 
 .logo {
@@ -104,23 +105,32 @@
 .marker-icon.sector-1,
 .card-schola-1 {
   background: var(--first);
+  box-shadow: inset 0 0 8px white, 0 0 0 0.3px rgb(75, 75, 75);
+  border-radius: 50%;
 }
-
 .marker-icon.sector-2,
 .card-schola-2 {
   background: var(--second);
-  border-radius: 25%;
+  box-shadow: inset 0 0 8px white, 0 0 0 0.3px rgb(75, 75, 75);
+  border-radius: 50%;
 }
 
 .marker-icon.sector-3,
 .card-schola-3 {
   background: var(--third);
+  box-shadow: inset 0 0 8px white, 0 0 0 0.3px rgb(75, 75, 75);
   border-radius: 50%;
 }
 
 .marker-icon.sector-4,
 .card-schola-4 {
   background: var(--fourth);
-  border-bottom-right-radius: calc(infinity * 1px);
-  border-bottom-left-radius: calc(infinity * 1px);
+  border-radius: 50%;
+}
+
+.marker-icon.sector-5,
+.card-schola-5 {
+  background: var(--five);
+  border-radius: 50%;
+  box-shadow: inset 0 0 8px white, 0 0 0 0.3px rgb(75, 75, 75);
 }

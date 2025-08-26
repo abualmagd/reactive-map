@@ -8,6 +8,7 @@ export const exportToExcel = async (data, fileName = "المدارس") => {
     quarter: "الحي",
     region: "المنطقة",
     sector: "التجمع الصحي",
+    edsector: "القطاع التعليمي",
     stage: "المرحلة",
     rule: "السلطة",
     gender: "جنس المدرسة",
@@ -68,7 +69,7 @@ export const exportToExcel = async (data, fileName = "المدارس") => {
   // Add data rows
   data.forEach((item) => {
     // eslint-disable-next-line no-unused-vars
-    const { id, sectorId, ...rest } = item;
+    const { id, sectorId, edsectorId, ...rest } = item;
     const row = worksheet.addRow(Object.values(rest));
 
     // Style data rows
@@ -358,6 +359,7 @@ export const importFromExcels = async (file) => {
     quarter: "الحي",
     region: "المنطقة",
     sector: "التجمع الصحي",
+    edsector: "القطاع التعليمي",
     stage: "المرحلة",
     rule: "السلطة",
     gender: "جنس المدرسة",
@@ -382,9 +384,19 @@ export const importFromExcels = async (file) => {
     "التجمع الصحي الأول": 1,
     "التجمع الصحي الثاني": 2,
     "التجمع الصحي الثالث": 3,
-    "لا تتبع أي تجمع": 4,
-    "لا تدخل ضمن تطبيق الخطة المشتركه ولا التجمعات الصحية": 5,
+    "لا تتبع أي تجمع (إسكان ورياض الأطفال)": 4,
+    "لا تتبع أي تجمع (تعليم مستمر)": 5,
     "": 4,
+  };
+
+  const edsectorMap = {
+    "القطاع التعليمي الأول": 1,
+    "القطاع التعليمي الثاني": 2,
+    "القطاع التعليمي الثالث": 3,
+    "القطاع التعليمي الرابع": 4,
+    "القطاع التعليمي الخامس": 5,
+    "التعليم المستمر": 6,
+    "": 6, // Default value for empty
   };
 
   return new Promise((resolve, reject) => {
@@ -454,6 +466,14 @@ export const importFromExcels = async (file) => {
               rowData.sectorId = sectorMap[sectorValue] || 4;
             } else {
               rowData.sectorId = 4;
+            }
+
+            //add edsectorId based on sector
+            if (rowData.edsector) {
+              const edsectorValue = String(rowData.edsector).trim();
+              rowData.edsectorId = edsectorMap[edsectorValue] || 6;
+            } else {
+              rowData.edsectorId = 6;
             }
 
             // Generate unique ID

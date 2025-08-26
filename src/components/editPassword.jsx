@@ -1,7 +1,6 @@
 import { useRef, useState } from "react";
 import { notify } from "../services/utils";
 import { getUserByName, updateAdminPassword } from "../services/adminServices";
-import { ToastContainer } from "react-toastify";
 
 export default function EditPassword() {
   const [type, setType] = useState("password");

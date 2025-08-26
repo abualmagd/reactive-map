@@ -14,14 +14,12 @@ function App() {
     getDbSchools();
   }, []);
 
-  /*const getSchools = () => {
-    return schoolsData;
-  };*/
   const getDbSchools = async () => {
     try {
       const respo = await getAllSchools();
       setMySchools(respo);
       setMyData(respo);
+      // console.log(respo);
       updateLoading(false);
     } catch (error) {
       console.log(error);

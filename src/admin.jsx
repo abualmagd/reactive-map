@@ -1,7 +1,6 @@
 import AddSchoolSection from "./components/addSchoolSection";
 import "./App.css";
 import { Link } from "react-router";
-import { ToastContainer } from "react-toastify";
 import ProtectedRoute from "./components/protectedRoute";
 
 export default function Admin() {
@@ -17,8 +16,6 @@ export default function Admin() {
         <div className="  w-full h-full flex lg:flex-row flex-col  lg:items-start items-center gap-4 flex-1">
           <AddSchoolSection />
         </div>
-
-        <ToastContainer />
       </div>
     </ProtectedRoute>
   );

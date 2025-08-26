@@ -16,11 +16,12 @@
   --gray: #c2c1c1;
   --green: #07a869;
   --brown: #c1b48a;
-  --first: blue;
+  --first: #0000ff;
   --second: green;
   --third: red;
-  --fourth: gray;
-  --five: black;
+  --fourth: yellow;
+  --five: gray;
+  --six: pink;
 }
 
 .logo {
@@ -125,6 +126,8 @@
 .marker-icon.sector-4,
 .card-schola-4 {
   background: var(--fourth);
+  box-shadow: inset 0 0 8px white, 0 0 0 0.3px rgb(75, 75, 75);
+
   border-radius: 50%;
 }
 

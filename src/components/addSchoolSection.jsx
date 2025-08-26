@@ -87,6 +87,8 @@ export default function AddSchoolSection() {
           supervisor: supervisorRef.current?.value ?? "",
           latitude: latRef.current?.value ?? "",
           longitude: longRef.current?.value ?? "",
+          edsector: "",
+          edsectorId: "",
         });
         console.log(res);
         notify("تم الاضافة بنجاح", "success");

@@ -113,7 +113,7 @@ export default function FilterSection() {
               className="cursor-pointer flex bg-transparent px-2 py-1 rounded-md peer-checked:bg-[var(--blue)] font-semibold"
             >
               <span>التجمع الصحي الأول</span>{" "}
-              <span className="block w-3 h-3 mx-1 mt-2 bg-[var(--first)]"></span>
+              <span className="block rounded-full w-3 h-3 mx-1 mt-2 bg-[var(--first)]"></span>
             </label>
           </div>
           <div className="choosery  flex ">
@@ -131,7 +131,7 @@ export default function FilterSection() {
               className="cursor-pointer flex bg-transparent px-2 py-1 rounded-md peer-checked:bg-[var(--blue)] font-semibold"
             >
               <span>التجمع الصحي الثاني</span>{" "}
-              <span className="block w-3 h-3 mx-1 mt-2 rounded bg-[var(--second)]"></span>
+              <span className="block rounded-full w-3 h-3 mx-1 mt-2  bg-[var(--second)]"></span>
             </label>
           </div>
           <div className="choosery  flex ">
@@ -149,7 +149,7 @@ export default function FilterSection() {
               className="cursor-pointer flex bg-transparent px-2 py-1 rounded-md peer-checked:bg-[var(--blue)] font-semibold"
             >
               <span>التجمع الصحي الثالث</span>{" "}
-              <span className="block w-3 h-3 mx-1 mt-2 rounded-full bg-[var(--third)]"></span>
+              <span className="block  w-3 h-3 mx-1 mt-2 rounded-full bg-[var(--third)]"></span>
             </label>
           </div>
 
@@ -168,7 +168,7 @@ export default function FilterSection() {
               className="cursor-pointer flex bg-transparent px-2 py-1 rounded-md peer-checked:bg-[var(--blue)] font-semibold"
             >
               <span> لا تتبع أي تجمع</span>{" "}
-              <span className="block w-3 h-3 mx-1 mt-2 rounded-b-full bg-[var(--fourth)]"></span>
+              <span className="block w-3 h-3 mx-1 mt-2 rounded-full bg-[var(--fourth)]"></span>
             </label>
           </div>
 
@@ -190,7 +190,7 @@ export default function FilterSection() {
                 {" "}
                 لا تدخل ضمن تطبيق الخطة المشتركه ولا التجمعات الصحية
               </span>{" "}
-              <span className="block w-3 h-3 mx-1 mt-2 bg-black"></span>
+              <span className="block w-3 rounded-full h-3 mx-1 mt-2 bg-black"></span>
             </label>
           </div>
         </div>

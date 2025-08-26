@@ -6,6 +6,7 @@ import {
   updateSchool,
 } from "../services/schoolsServices";
 import { notify } from "../services/utils";
+import EditPassword from "./editPassword";
 
 export default function EditSchool() {
   const [schola, updateSchola] = useState();
@@ -13,6 +14,12 @@ export default function EditSchool() {
   const [data, updatData] = useState();
   const nameRef = useRef();
 
+  const logout = () => {
+    localStorage.setItem("isAuthenticated", "none");
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
+  };
   const search = () => {
     const nameValue = nameRef.current?.value.trim().toLowerCase();
     let filtered = data;
@@ -98,6 +105,15 @@ export default function EditSchool() {
         className="text-white max-w-60 cursor-pointer bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
       >
         أحذف كل المدارس{" "}
+      </button>
+      <div className="h-20 border-t-2"></div>
+      <h3 className=" font-semibold text-xl">تعديل الباسورد</h3>
+      <EditPassword />
+      <button
+        onClick={logout}
+        className="text-white max-w-60 cursor-pointer bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+      >
+        سجل الخروج{" "}
       </button>
       <AreYouShureModalDeLeteAll />
     </div>

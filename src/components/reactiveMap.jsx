@@ -1,6 +1,6 @@
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import React, { useContext, useMemo } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { SchoolContext } from "../context/school";
 import L from "leaflet";
 
@@ -35,7 +35,7 @@ export default function ReactiveMap() {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">openstream</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {memoizedSchools.map((schola, index) => {
+        {memoizedSchools.slice(0, 100).map((schola, index) => {
           return (
             <Marker
               key={index}
@@ -129,3 +129,93 @@ const PopDiv = React.memo(({ schola }) => {
     </div>
   );
 });
+
+// Component to handle viewport-based marker rendering
+const DynamicMarkers = ({ schools }) => {
+  const map = useMap();
+  const [bounds, setBounds] = useState(map.getBounds());
+  const [zoom, setZoom] = useState(map.getZoom());
+
+  useEffect(() => {
+    const updateBounds = () => {
+      setBounds(map.getBounds());
+      setZoom(map.getZoom());
+    };
+
+    map.on("moveend", updateBounds);
+    map.on("zoomend", updateBounds);
+
+    return () => {
+      map.off("moveend", updateBounds);
+      map.off("zoomend", updateBounds);
+    };
+  }, [map]);
+
+  // Filter markers based on current viewport and zoom level
+  const visibleSchools = useMemo(() => {
+    // At higher zoom levels, show all markers in viewport
+    if (zoom >= 10) {
+      return schools.filter((school) =>
+        bounds.contains([school.latitude, school.longitude])
+      );
+    }
+
+    // At lower zoom levels, show a subset of markers (sampling)
+    const sampleRate = Math.max(1, Math.floor(schools.length / 300));
+    return schools.filter(
+      (school, index) =>
+        index % sampleRate === 0 &&
+        bounds.contains([school.latitude, school.longitude])
+    );
+  }, [schools, bounds, zoom]);
+
+  const createCustomIcon = (schola) => {
+    // Generate a color based on sectorId or use a default
+    const color = `hsl(${(schola.sectorId * 137) % 360}, 70%, 50%)`;
+
+    return L.divIcon({
+      html: `
+      <div style="
+        position: relative;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        border: 0.5px solid black;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      ">
+        <div style="
+          width: 18px;
+          height: 18px;
+          border-radius: 50%;
+          border: 2px solid white;
+          background: ${color};
+        "></div>
+      </div>
+    `,
+      className: "custom-marker-icon",
+      iconSize: [24, 24],
+      iconAnchor: [12, 12],
+      popupAnchor: [0, -12],
+    });
+  };
+  return (
+    <>
+      {visibleSchools.map((schola, index) => {
+        return (
+          <Marker
+            key={`${schola.id}-${index}`}
+            position={[schola.latitude, schola.longitude]}
+            icon={createCustomIcon(schola)}
+          >
+            <Popup>
+              <PopDiv schola={schola} />
+            </Popup>
+          </Marker>
+        );
+      })}
+    </>
+  );
+};

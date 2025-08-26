@@ -6,6 +6,7 @@ import {
 } from "../services/schoolsServices";
 import { notify } from "../services/utils";
 import EditSchool from "./editSchool";
+import { ToastContainer } from "react-toastify";
 
 export default function AddSchoolSection() {
   const [loading, updateLoading] = useState(false);
@@ -351,6 +352,7 @@ export default function AddSchoolSection() {
       </form>
       <div className="divider border-2 my-8 w-full"></div>
       <EditSchool />
+      <ToastContainer />
     </div>
   );
 }

@@ -3,11 +3,11 @@ import { SchoolContext } from "../context/school";
 import { InitialContext } from "../context/initialContext";
 import { exportToExcel } from "../services/excelServices";
 import { Link } from "react-router";
-import { healthSectors } from "../data";
+import { educationSectors } from "../data";
 
-export default function FilterSection() {
+export default function EdFilterSection() {
   const { schools, setSchools } = useContext(SchoolContext);
-  const [sectors, updateSectors] = useState([1, 2, 3, 4, 5]);
+  const [edSectors, updateEdSectors] = useState([1, 2, 3, 4, 5, 6]);
   const { data } = useContext(InitialContext);
   const nameRef = useRef();
   const quarterRef = useRef();
@@ -17,17 +17,17 @@ export default function FilterSection() {
 
   const updateUserSectors = (id, e) => {
     if (e.target.checked) {
-      const filtered = [...sectors, id];
-      updateSectors((prev) => [...prev, id]);
+      const filtered = [...edSectors, id];
+      updateEdSectors((prev) => [...prev, id]);
       const filterdSchools = data.filter((schola) =>
-        filtered.includes(schola.sectorId)
+        filtered.includes(schola.edsectorId)
       );
       setSchools(filterdSchools);
     } else {
-      const filtered = sectors.filter((sector) => sector !== id);
-      updateSectors(filtered);
+      const filtered = edSectors.filter((sector) => sector !== id);
+      updateEdSectors(filtered);
       const filterdSchools = data.filter((schola) =>
-        filtered.includes(schola.sectorId)
+        filtered.includes(schola.edsectorId)
       );
       setSchools(filterdSchools);
     }
@@ -50,7 +50,7 @@ export default function FilterSection() {
     const typeValue = typeRef.current?.value.toLowerCase();
 
     const sectoredData = data.filter((schola) =>
-      sectors.includes(schola.sectorId)
+      edSectors.includes(schola.edsectorId)
     );
 
     let filtered = sectoredData;
@@ -104,7 +104,7 @@ export default function FilterSection() {
               type="checkbox"
               name="sector1"
               id="sector-1"
-              checked={sectors.includes(1)}
+              checked={edSectors.includes(1)}
               onChange={(e) => updateUserSectors(1, e)}
               className="peer ml-1 cursor-pointer"
             />
@@ -113,7 +113,7 @@ export default function FilterSection() {
               htmlFor="sector-1"
               className="cursor-pointer flex bg-transparent px-2 py-1 rounded-md peer-checked:bg-[var(--blue)] font-semibold"
             >
-              <span> {healthSectors[1]}</span>{" "}
+              <span> {educationSectors[1]}</span>{" "}
               <span className="block rounded-full w-3 h-3 mx-1 mt-2 bg-[var(--first)]"></span>
             </label>
           </div>
@@ -122,7 +122,7 @@ export default function FilterSection() {
               type="checkbox"
               name="sector2"
               id="sector-2"
-              checked={sectors.includes(2)}
+              checked={edSectors.includes(2)}
               onChange={(e) => updateUserSectors(2, e)}
               className="peer ml-1 cursor-pointer"
             />
@@ -131,7 +131,7 @@ export default function FilterSection() {
               htmlFor="sector-2"
               className="cursor-pointer flex bg-transparent px-2 py-1 rounded-md peer-checked:bg-[var(--blue)] font-semibold"
             >
-              <span> {healthSectors[2]}</span>{" "}
+              <span> {educationSectors[2]}</span>{" "}
               <span className="block rounded-full w-3 h-3 mx-1 mt-2  bg-[var(--second)]"></span>
             </label>
           </div>
@@ -140,7 +140,7 @@ export default function FilterSection() {
               type="checkbox"
               name="sector3"
               id="sector-3"
-              checked={sectors.includes(3)}
+              checked={edSectors.includes(3)}
               onChange={(e) => updateUserSectors(3, e)}
               className="peer ml-1 cursor-pointer"
             />
@@ -149,7 +149,7 @@ export default function FilterSection() {
               htmlFor="sector-3"
               className="cursor-pointer flex bg-transparent px-2 py-1 rounded-md peer-checked:bg-[var(--blue)] font-semibold"
             >
-              <span>{healthSectors[3]}</span>{" "}
+              <span>{educationSectors[3]}</span>{" "}
               <span className="block  w-3 h-3 mx-1 mt-2 rounded-full bg-[var(--third)]"></span>
             </label>
           </div>
@@ -159,7 +159,7 @@ export default function FilterSection() {
               type="checkbox"
               name="sector4"
               id="sector-4"
-              checked={sectors.includes(4)}
+              checked={edSectors.includes(4)}
               onChange={(e) => updateUserSectors(4, e)}
               className="peer ml-1 cursor-pointer"
             />
@@ -168,7 +168,7 @@ export default function FilterSection() {
               htmlFor="sector-4"
               className="cursor-pointer flex bg-transparent px-2 py-1 rounded-md peer-checked:bg-[var(--blue)] font-semibold"
             >
-              <span> {healthSectors[4]} </span>{" "}
+              <span> {educationSectors[4]} </span>{" "}
               <span className="block w-3 h-3 mx-1 mt-2 rounded-full bg-[var(--fourth)]"></span>
             </label>
           </div>
@@ -178,7 +178,7 @@ export default function FilterSection() {
               type="checkbox"
               name="sector5"
               id="sector-5"
-              checked={sectors.includes(5)}
+              checked={edSectors.includes(5)}
               onChange={(e) => updateUserSectors(5, e)}
               className="peer ml-1 cursor-pointer"
             />
@@ -189,9 +189,31 @@ export default function FilterSection() {
             >
               <span className=" text-[1rem] overflow-hidden">
                 {" "}
-                {healthSectors[5]}{" "}
+                {educationSectors[5]}{" "}
               </span>{" "}
               <span className="block w-3 rounded-full h-3 mx-1 mt-2 bg-[var(--five)]"></span>
+            </label>
+          </div>
+
+          <div className="choosery  flex  h-8">
+            <input
+              type="checkbox"
+              name="sector6"
+              id="sector-6"
+              checked={edSectors.includes(6)}
+              onChange={(e) => updateUserSectors(6, e)}
+              className="peer ml-1 cursor-pointer"
+            />
+
+            <label
+              htmlFor="sector-6"
+              className="cursor-pointer flex bg-transparent px-2 py-1 rounded-md peer-checked:bg-[var(--blue)] font-semibold"
+            >
+              <span className=" text-[1rem] overflow-hidden">
+                {" "}
+                {educationSectors[6] || ""}{" "}
+              </span>{" "}
+              <span className="block w-3 rounded-full h-3 mx-1 mt-2 bg-[var(--six)]"></span>
             </label>
           </div>
         </div>

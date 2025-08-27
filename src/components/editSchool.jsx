@@ -129,6 +129,8 @@ const FixerSection = ({ school }) => {
     quarter: school.quarter ?? "",
     sector: school.sector ?? "",
     sectorId: school.sectorId ?? "",
+    edsectorId: school.edsectorId ?? "",
+    edsector: school.edsector ?? "",
     stage: school.stage ?? "",
     gender: school.gender ?? "",
     rule: school.rule ?? "",
@@ -141,6 +143,7 @@ const FixerSection = ({ school }) => {
     longitude: school.longitude ?? "",
   });
 
+  //console.log("school", school);
   const handleChange = (e) => {
     updateSkool((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -153,6 +156,8 @@ const FixerSection = ({ school }) => {
       quarter: school.quarter ?? "",
       sector: school.sector ?? "",
       sectorId: school.sectorId ?? "",
+      edsectorId: school.edsectorId ?? "",
+      edsector: school.edsector ?? "",
       stage: school.stage ?? "",
       gender: school.gender ?? "",
       rule: school.rule ?? "",
@@ -176,6 +181,15 @@ const FixerSection = ({ school }) => {
     }
   };
 
+  const handleChangeEdSectorName = (e) => {
+    if (e.target.value) {
+      updateSkool((prev) => ({
+        ...prev,
+        edsector: sectoring(e.target.value),
+        edsectorId: e.target.value,
+      }));
+    }
+  };
   const sectoring = (id) => {
     const sectorMap = {
       1: "التجمع الصحي الأول",
@@ -352,8 +366,27 @@ const FixerSection = ({ school }) => {
                   <option value={1}>الأول </option>
                   <option value={2}>الثاني </option>
                   <option value={3}>الثالث </option>
-                  <option value={4}>لا تببع </option>
-                  <option value={5}>لا تدخل ضمن تطبيق الخطة</option>
+                  <option value={4}>لا تتبع </option>
+                  <option value={5}>لا تتبع (تعليم مستمر) </option>
+                </select>
+              </div>
+
+              <div className=" flex flex-col gap-2.5 items-start w-full">
+                <label htmlFor="school-edsector">القطاع التعليمي :</label>
+                <select
+                  name="edsectorId"
+                  onChange={handleChangeEdSectorName}
+                  value={skool.edsectorId}
+                  id="school-edsector"
+                  className=" outline-none cursor-pointer min-w-30 bg-[var(--gray)]  h-10 text-black px-2 rounded"
+                >
+                  <option value={""}> </option>
+                  <option value={1}>الأول </option>
+                  <option value={2}>الثاني </option>
+                  <option value={3}>الثالث </option>
+                  <option value={4}>الرابع </option>
+                  <option value={5}>الخامس</option>
+                  <option value={6}>التعليم المستمر</option>
                 </select>
               </div>
 

@@ -19,7 +19,7 @@ function App() {
       const respo = await getAllSchools();
       setMySchools(respo);
       setMyData(respo);
-      // console.log(respo);
+      //console.log(respo);
       updateLoading(false);
     } catch (error) {
       console.log(error);
